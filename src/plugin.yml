@@ -1,0 +1,5 @@
+main: net.urbanmc.antt.ANTT
+version: 1.0
+name: ANTT
+description: Allied Nation Town Teleportation plug-in
+softdepend: [Towny]
