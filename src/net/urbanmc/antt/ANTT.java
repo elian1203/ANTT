@@ -4,6 +4,8 @@ import java.util.ArrayList;
 
 import org.bukkit.plugin.java.JavaPlugin;
 
+// Please make sure to add Towny to your external jar.
+
 public class ANTT extends JavaPlugin {
 
 	private static ArrayList<String> townsToggled = new ArrayList<String>();
