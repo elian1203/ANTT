@@ -14,7 +14,6 @@ public class BaseCommand implements CommandExecutor {
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-
 		if (!(sender instanceof Player)) {
 			sender.sendMessage("You must be a player to run this command.");
 			return true;
@@ -26,10 +25,9 @@ public class BaseCommand implements CommandExecutor {
 			infoMessage(p, label);
 			return true;
 		}
-		
-		
+
 		String sub = args[0].toLowerCase();
-		
+
 		switch (sub) {
 		case "nation":
 			new NationSub(p, args);
@@ -42,16 +40,20 @@ public class BaseCommand implements CommandExecutor {
 			return true;
 		}
 
+		infoMessage(p, label);
+
 		return true;
 	}
 
 	private void infoMessage(Player p, String label) {
-		String message = ChatColor.GOLD + "-- Allied Nation Town Teleportation --\n" 
-				+ "/" + label + " tp (town)" + ChatColor.WHITE + ": Teleport to a town's spawn!\n" 
-				+ ChatColor.GOLD + "/" + label + " nation" + ChatColor.WHITE + ": Toggle your nation for ANTT!\n" 
-				+ ChatColor.GOLD + "/" + label + " town"+ ChatColor.WHITE + ": Toggle your town for ANTT!"
-		;
-		p.sendMessage(message);
+		StringBuilder message = new StringBuilder();
+
+		message.append(ChatColor.GOLD + "-- Allied Nation Town Teleportation --\n");
+		message.append("/" + label + " tp (town)" + ChatColor.WHITE + ": Teleport to a town's spawn!\n");
+		message.append(ChatColor.GOLD + "/" + label + " town" + ChatColor.WHITE + ": Toggle whether or not your town has ANTT enabled.\n");
+		message.append(ChatColor.GOLD + "/" + label + " nation" + ChatColor.WHITE + ": Toggle whether or not your nation has ANTT enabled.");
+
+		p.sendMessage(message.toString());
 	}
 
 }

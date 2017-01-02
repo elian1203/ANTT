@@ -6,7 +6,7 @@ softdepend: [Towny]
 
 commands:
   antt:
-    description: Base command for plugin
+    description: Base command for plug-in
 permissions:
   antt.*:
     default: op
