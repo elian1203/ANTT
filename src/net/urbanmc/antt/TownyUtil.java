@@ -9,9 +9,43 @@ import com.palmergames.bukkit.towny.object.TownyUniverse;
 
 public class TownyUtil {
 
+	public static Nation getNation(String name) {
+		Nation nation = null;
+
+		try {
+			nation = TownyUniverse.getDataSource().getNation(name);
+		} catch (NotRegisteredException ex) {
+			;
+		}
+
+		if (nation == null) {
+			for (Nation dataNation : TownyUniverse.getDataSource().getNations()) {
+				if (dataNation.getName().equalsIgnoreCase(name)) {
+					nation = dataNation;
+					break;
+				}
+			}
+		}
+
+		return nation;
+	}
+
 	public static Nation getNation(Player p) {
 		try {
 			return TownyUniverse.getDataSource().getResident(p.getName()).getTown().getNation();
+		} catch (NotRegisteredException ex) {
+			return null;
+		}
+	}
+
+	public static Nation getNationOfTown(String townName) {
+		Town town = getTown(townName);
+
+		if (town == null)
+			return null;
+
+		try {
+			return town.getNation();
 		} catch (NotRegisteredException ex) {
 			return null;
 		}

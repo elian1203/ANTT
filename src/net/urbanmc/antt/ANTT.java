@@ -1,21 +1,16 @@
 package net.urbanmc.antt;
 
-import java.util.ArrayList;
+import java.util.logging.Level;
 
 import org.bukkit.plugin.java.JavaPlugin;
 
-// Please make sure to add Towny to your external jar.
-
 public class ANTT extends JavaPlugin {
-
-	private static ArrayList<String> townsToggled = new ArrayList<String>();
 	
 	@Override
 	public void onEnable() {
-		
-	}
-	
-	public static ArrayList<String> getTownsToggled() {
-		return townsToggled;
+		if (!getServer().getPluginManager().isPluginEnabled("Towny")) {
+			getLogger().log(Level.SEVERE, "Towny plugin not found! Disabling.");
+			setEnabled(false);
+		}
 	}
 }

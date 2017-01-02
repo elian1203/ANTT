@@ -1,28 +1,29 @@
 package net.urbanmc.antt;
 
-import org.bukkit.Bukkit;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 import com.palmergames.bukkit.towny.exceptions.NotRegisteredException;
 import com.palmergames.bukkit.towny.exceptions.TownyException;
-import com.palmergames.bukkit.towny.exceptions.NotRegisteredException;
-import com.palmergames.bukkit.towny.exceptions.TownyException;
 import com.palmergames.bukkit.towny.object.Nation;
 import com.palmergames.bukkit.towny.object.Town;
-import com.palmergames.bukkit.towny.object.TownyUniverse;
 
-
+import net.urbanmc.antt.gson.ToggledNation;
 
 public class Functions {
-	public static void travelTown(Player p, String townname) {
 
+	public static void travelTown(Player p, String townname) {
 		if (!p.hasPermission("antt.travel") && !p.hasPermission("antt.kingtravel")) {
 			p.sendMessage(ChatColor.RED + "You do not have permission to do this!");
 			return;
 		}
+
 		boolean isKing = (p.hasPermission("antt.kingtravel")) ? true : false;
+
 		Nation nation = TownyUtil.getNation(p);
 
 		if (nation == null) {
@@ -30,14 +31,12 @@ public class Functions {
 			return;
 		}
 
-		Bukkit.broadcastMessage(townname);
 		Town travelTown;
 		String travelTownName = null;
 		if (!isKing) {
 			try {
-			travelTownName = matchTown(townname);
-			} 
-			catch (NullPointerException e) {
+				travelTownName = matchTown(townname);
+			} catch (NullPointerException e) {
 				p.sendMessage(ChatColor.RED + "You are not allowed to travel to that town!");
 				return;
 			}
@@ -46,7 +45,7 @@ public class Functions {
 				p.sendMessage(ChatColor.RED + "You are not allowed to travel to that town!");
 				return;
 			}
-			
+
 			travelTown = TownyUtil.getTown(travelTownName);
 		} else {
 			travelTown = TownyUtil.getTown(townname);
@@ -62,7 +61,6 @@ public class Functions {
 			travelNation = travelTown.getNation();
 		} catch (NotRegisteredException e) {
 			p.sendMessage(ChatColor.RED + "The town you want to travel to is not in a nation!");
-			removeTown(travelTownName);
 			return;
 		}
 
@@ -93,20 +91,104 @@ public class Functions {
 		return;
 
 	}
-	
+
+	public static boolean isNationToggled(String nation) {
+		for (ToggledNation toggledNation : Storage.getInstance().getToggled()) {
+			if (nation.equals(toggledNation.getNation()))
+				return true;
+		}
+
+		return false;
+	}
+
+	public static boolean isTownToggled(String town) {
+		ToggledNation toggledNation = getToggledNationOfTown(town);
+
+		if (toggledNation == null)
+			return false;
+
+		for (String toggledTown : toggledNation.getToggledTowns()) {
+			if (toggledTown.equals(town))
+				return true;
+		}
+
+		return false;
+	}
+
+	public void setNationToggled(String nation, boolean toggled) {
+		if (toggled == isNationToggled(nation))
+			return;
+
+		if (toggled) {
+			ToggledNation toggledNation = new ToggledNation(nation);
+
+			Storage.getInstance().getToggled().add(toggledNation);
+		} else {
+			ToggledNation toggledNation = getToggledNation(nation);
+
+			Storage.getInstance().getToggled().remove(toggledNation);
+		}
+
+		Storage.getInstance().saveGson();
+	}
+
+	public void setTownToggled(String town, boolean toggled) {
+		if (toggled == isTownToggled(town))
+			return;
+
+		ToggledNation toggledNation = getToggledNationOfTown(town);
+
+		if (toggledNation == null)
+			return;
+
+		if (toggled) {
+			toggledNation.addToggledTown(town);
+		} else {
+			toggledNation.removeToggledTown(town);
+		}
+
+		Storage.getInstance().saveGson();
+	}
+
 	private static String matchTown(String name) {
-		if (ANTT.getTownsToggled().isEmpty())
-			return null;
-		for (String string : ANTT.getTownsToggled()) {
+		for (String string : getToggledTowns()) {
 			if (name.equalsIgnoreCase(string))
 				return string;
 		}
+
 		return null;
 	}
 
-	private static void removeTown(String townname) {
-		if (ANTT.getTownsToggled().contains(townname))
-			ANTT.getTownsToggled().remove(townname);
-		return;
+	private static List<String> getToggledTowns() {
+		List<String> toggledTowns = new ArrayList<String>();
+
+		for (ToggledNation nation : Storage.getInstance().getToggled()) {
+			toggledTowns.addAll(nation.getToggledTowns());
+		}
+
+		return toggledTowns;
+	}
+
+	private static ToggledNation getToggledNation(String nation) {
+		for (ToggledNation toggledNation : Storage.getInstance().getToggled()) {
+			if (nation.equals(toggledNation.getNation()))
+				return toggledNation;
+		}
+
+		return null;
+	}
+
+	private static ToggledNation getToggledNationOfTown(String town) {
+		Nation nation = TownyUtil.getNationOfTown(town);
+
+		if (nation == null)
+			return null;
+
+		String name = nation.getName();
+
+		if (!isNationToggled(name))
+			return null;
+
+		return getToggledNation(name);
 	}
 }
