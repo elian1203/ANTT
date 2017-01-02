@@ -32,10 +32,10 @@ public class BaseCommand implements CommandExecutor {
 		
 		switch (sub) {
 		case "nation":
-			new NationSub(p);
+			new NationSub(p, args);
 			return true;
 		case "town":
-			new TownSub(p);
+			new TownSub(p, args);
 			return true;
 		case "tp":
 			new TpSub(p, args);
