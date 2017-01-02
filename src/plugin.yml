@@ -3,3 +3,20 @@ version: 1.0
 name: ANTT
 description: Allied Nation Town Teleportation plug-in
 softdepend: [Towny]
+
+commands:
+  antt:
+    description: Base command for plugin
+permissions:
+  antt.*:
+    default: op
+    children:
+      antt.tp: true
+      antt.town: true
+      antt.nation: true
+  antt.tp:
+    default: false
+  antt.town:
+    default: false
+  antt.nation:
+    default: false
