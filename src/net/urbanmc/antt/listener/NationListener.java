@@ -12,15 +12,11 @@ public class NationListener implements Listener {
 
 	@EventHandler
 	public void onNationRemoveTown(NationRemoveTownEvent e) {
-		if (Functions.isTownToggled(e.getTown().getName())) {
-			Functions.setTownToggled(e.getTown().getName(), false);
-		}
+		Functions.setTownToggled(e.getTown().getName(), false);
 	}
 
 	@EventHandler
 	public void onDeleteNation(DeleteNationEvent e) {
-		if (Functions.isNationToggled(e.getNationName())) {
-			Functions.setNationToggled(e.getNationName(), false);
-		}
+		Functions.setNationToggled(e.getNationName(), false);
 	}
 }

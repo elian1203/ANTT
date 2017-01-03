@@ -9,6 +9,7 @@ import net.urbanmc.antt.Functions;
 import net.urbanmc.antt.TownyUtil;
 
 public class TownSub {
+
 	public TownSub(Player p, String[] args) {
 		Town town = TownyUtil.getTown(p);
 
@@ -44,8 +45,8 @@ public class TownSub {
 		boolean option = Boolean.getBoolean(args[1]);
 		Functions.setTownToggled(town.getName(), option);
 
-		p.sendMessage(String.format(ChatColor.GOLD + "You have %s ANTT for your nation.", (option) ? "enabled" : "disabled"));
-
+		p.sendMessage(
+				String.format(ChatColor.GOLD + "You have %s ANTT for your nation.", (option) ? "enabled" : "disabled"));
 	}
 
 	private void sendMessage(Player p, String s) {

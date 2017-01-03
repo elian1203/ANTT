@@ -8,7 +8,7 @@ import net.urbanmc.antt.command.BaseCommand;
 import net.urbanmc.antt.listener.NationListener;
 
 public class ANTT extends JavaPlugin {
-	
+
 	@Override
 	public void onEnable() {
 		if (!getServer().getPluginManager().isPluginEnabled("Towny")) {

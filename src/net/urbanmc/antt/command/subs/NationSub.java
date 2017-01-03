@@ -47,5 +47,4 @@ public class NationSub {
 	private void sendMessage(Player p, String s) {
 		p.sendMessage(ChatColor.RED + s);
 	}
-
 }
