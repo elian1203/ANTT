@@ -1,5 +1,6 @@
 package net.urbanmc.antt.gson;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ToggledNation {
@@ -9,6 +10,7 @@ public class ToggledNation {
 
 	public ToggledNation(String nation) {
 		this.nation = nation;
+		this.toggledTowns = new ArrayList<String>();
 	}
 
 	public String getNation() {

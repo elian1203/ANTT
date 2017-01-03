@@ -42,11 +42,11 @@ public class TownSub {
 			return;
 		}
 
-		boolean option = Boolean.getBoolean(args[1]);
+		boolean option = Boolean.valueOf(args[1]);
 		Functions.setTownToggled(town.getName(), option);
 
 		p.sendMessage(
-				String.format(ChatColor.GOLD + "You have %s ANTT for your nation.", (option) ? "enabled" : "disabled"));
+				String.format(ChatColor.GOLD + "You have %s ANTT for your town.", (option) ? "enabled" : "disabled"));
 	}
 
 	private void sendMessage(Player p, String s) {

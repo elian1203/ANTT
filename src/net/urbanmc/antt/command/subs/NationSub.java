@@ -37,7 +37,7 @@ public class NationSub {
 			sendMessage(p, "Usage: /antt nation [true/false]");
 		}
 
-		boolean toggled = Boolean.getBoolean(args[1]);
+		boolean toggled = Boolean.valueOf(args[1]);
 		Functions.setNationToggled(nation.getName(), toggled);
 
 		p.sendMessage(String.format(ChatColor.GOLD + "You have %s ANTT for your nation.",
